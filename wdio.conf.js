@@ -47,7 +47,11 @@ exports.config = {
     waitforTimeout: 60000,
     connectionRetryTimeout: 120000,
     connectionRetryCount: 3,
-    services: ['chromedriver'],
+    services: [
+        ['chromedriver', {
+            chromedriverCustomPath: './node_modules/.bin/chromedriver.exe'
+        }]
+    ],
     framework: 'cucumber',
     reporters: ['spec'],
     cucumberOpts: {
