@@ -24,3 +24,7 @@ Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$env:USERPROFILE\.cac
 
 # 4. Reinstall packages: 
 npm install
+
+# In PowerShell before running your tests
+$env:WDIO_CHROMEDRIVER_BINARY = "C:\path\to\your\chromedriver.exe"
+npm run test:login
