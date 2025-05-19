@@ -22,12 +22,12 @@
   },
   "homepage": "https://github.com/Kasun48/openfin-automation#readme",
   "devDependencies": {
-    "@wdio/cli": "^9.14.0",
-    "@wdio/cucumber-framework": "^9.14.0",
-    "@wdio/local-runner": "^9.14.0",
-    "@wdio/spec-reporter": "^9.14.0",
+    "@wdio/cli": "^8.16.18",
+    "@wdio/cucumber-framework": "^8.16.18",
+    "@wdio/local-runner": "^8.16.18",
+    "@wdio/spec-reporter": "^8.16.18",
     "chromedriver": "^136.0.2",
-    "webdriverio": "^9.14.0",
+    "webdriverio": "^8.16.18",
     "wdio-chromedriver-service": "^8.1.1"
   },
   "dependencies": {
