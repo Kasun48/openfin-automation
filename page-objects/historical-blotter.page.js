@@ -372,5 +372,4 @@ class HistoricalBlotterPage {
         }
     }
 }
-
-module.exports = new HistoricalBlotterPage();
+export default new HistoricalBlotterPage();
