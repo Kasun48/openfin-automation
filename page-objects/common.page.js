@@ -74,4 +74,4 @@ class CommonPage {
     }
 }
 
-module.exports = new CommonPage();
+export default new CommonPage();
