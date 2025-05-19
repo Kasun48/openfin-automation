@@ -32,9 +32,9 @@ exports.config = {
         browserName: 'chrome',
         acceptInsecureCerts: true,
         'goog:chromeOptions': {
-            // Connect to existing Chrome instance with debug port
             debuggerAddress: '127.0.0.1:9222',
-        }
+        },
+        automationProtocol: 'devtools'
     }],
     //
     // ===================
@@ -47,11 +47,7 @@ exports.config = {
     waitforTimeout: 60000,
     connectionRetryTimeout: 120000,
     connectionRetryCount: 3,
-    services: [
-        ['chromedriver', {
-            chromedriverCustomPath: './node_modules/.bin/chromedriver.exe'
-        }]
-    ],
+    services: [],
     framework: 'cucumber',
     reporters: ['spec'],
     cucumberOpts: {
