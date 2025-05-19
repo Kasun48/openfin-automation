@@ -28,3 +28,6 @@ npm install
 # In PowerShell before running your tests
 $env:WDIO_CHROMEDRIVER_BINARY = "C:\path\to\your\chromedriver.exe"
 npm run test:login
+
+npm uninstall chromedriver @wdio/chromedriver-service
+npm uninstall chromedriver

@@ -1,24 +1,13 @@
 {
   "name": "openfin-automation",
   "version": "1.0.0",
-  "description": "Automate OpenFin application with WebDriverIO",
+  "description": "Automate OpenFin application with WebDriverIO using DevTools protocol",
   "main": "index.js",
   "scripts": {
     "test": "wdio run wdio.conf.js",
     "test:login": "wdio run wdio.conf.js --spec ./features/login.feature",
     "test:historical-blotter": "wdio run wdio.conf.js --spec ./features/historical-blotter.feature"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Kasun48/openfin-automation.git"
-  },
-  "keywords": ["openfin", "webdriverio", "automation"],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Kasun48/openfin-automation/issues"
-  },
-  "homepage": "https://github.com/Kasun48/openfin-automation#readme",
   "devDependencies": {
     "@wdio/cli": "^8.16.18",
     "@wdio/cucumber-framework": "^8.16.18",
