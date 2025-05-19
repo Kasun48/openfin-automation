@@ -1,8 +1,9 @@
-const { Given, When, Then } = require('@wdio/cucumber-framework');
-const HistoricalBlotterPage = require('../page-objects/historical-blotter.page');
-const CommonPage = require('../page-objects/common.page');
-const { captureScreenshot } = require('../utils/screenshot');
-const { switchToWindowContaining } = require('../utils/wait-helper');
+import { Given, When, Then } from '@wdio/cucumber-framework';
+import HistoricalBlotterPage from '../page-objects/historical-blotter.page.js';
+import CommonPage from '../page-objects/common.page.js';
+import { captureScreenshot } from '../utils/screenshot.js';
+import { switchToWindowContaining } from '../utils/wait-helper.js';
+
 
 When('I navigate to the Historical Trader Blotter screen', async () => {
     console.log('Navigating to Historical Trader Blotter screen...');
