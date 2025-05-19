@@ -1,10 +1,11 @@
 {
+  "type": "module",
   "name": "openfin-automation",
   "version": "1.0.0",
   "description": "Automate OpenFin application with WebDriverIO using DevTools protocol",
   "main": "index.js",
   "scripts": {
-    "test": "CHROMEDRIVER_SKIP_DOWNLOAD=true WDIO_DISABLE_CHROMEDRIVER=true wdio run wdio.conf.js",
+    "test": "CCHROMEDRIVER_SKIP_DOWNLOAD=true WDIO_DISABLE_CHROMEDRIVER=true wdio run wdio.conf.js",
     "test:login": "wdio run wdio.conf.js --spec ./features/login.feature",
     "test:historical-blotter": "wdio run wdio.conf.js --spec ./features/historical-blotter.feature"
   },

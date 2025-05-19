@@ -1,7 +1,7 @@
-const { Given, When, Then } = require('@wdio/cucumber-framework');
-const LoginPage = require('../page-objects/login.page');
-const CommonPage = require('../page-objects/common.page');
-const { captureScreenshot } = require('../utils/screenshot');
+import { Given, When, Then } from '@wdio/cucumber-framework';
+import LoginPage from '../page-objects/login.page.js';
+import CommonPage from '../page-objects/common.page.js';
+import { captureScreenshot } from '../utils/screenshot.js';
 
 Given('the OpenFin application is launched', async () => {
     // The application is launched in the onPrepare hook, so we just need to verify it's running

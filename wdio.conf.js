@@ -1,104 +1,40 @@
-const path = require('path');
-const fs = require('fs-extra');
-const { spawn } = require('child_process');
-const axios = require('axios');
+import path from 'path';
+import fs from 'fs-extra';
+import axios from 'axios';
+import { launchOpenFinApplication, isDebugPortAvailable } from './utils/openfin-launcher.js';
 
-exports.config = {
+const BAT_FILE_PATH = 'C:\\Merlin\\launch_openfin_fo_dev.bat';   // <-- centralised path
+
+export const config = {
     runner: 'local',
     specs: ['./features/**/*.feature'],
-    exclude: [],
     maxInstances: 1,
     automationProtocol: 'devtools',
     capabilities: [{
         browserName: 'chrome',
-        acceptInsecureCerts: true,
-        'goog:chromeOptions': {
-            debuggerAddress: '127.0.0.1:9222'
-        }
+        'goog:chromeOptions': { debuggerAddress: '127.0.0.1:9222' }
     }],
-    logLevel: 'info',
-    bail: 0,
-    baseUrl: 'http://localhost:8081',
-    waitforTimeout: 60000,
-    connectionRetryTimeout: 120000,
-    connectionRetryCount: 3,
-    services: ['devtools'], // No chromedriver or selenium
+    services: ['devtools'],
     framework: 'cucumber',
     reporters: ['spec'],
     cucumberOpts: {
         require: ['./step-definitions/**/*.js'],
-        timeout: 60000
+        timeout: 60_000
     },
 
-    // === Hook for setup
-    onPrepare: async function () {
-        // Force-disable any chromedriver activity
+    /********** life-cycle hooks **********/
+    onPrepare: async () => {
         process.env.CHROMEDRIVER_SKIP_DOWNLOAD = 'true';
-        process.env.WDIO_DISABLE_CHROMEDRIVER = 'true';
+        process.env.WDIO_DISABLE_CHROMEDRIVER   = 'true';
 
-        const screenshotDir = path.join(process.cwd(), 'screenshots');
-        console.log('>>> automationProtocol:', exports.config.automationProtocol);
-        await fs.ensureDir(screenshotDir);
+        await fs.ensureDir(path.join(process.cwd(), 'screenshots'));
 
-        let debugPortAvailable = false;
-        try {
-            const response = await axios.get('http://127.0.0.1:9222/json', { timeout: 2000 })
-                .catch(() => axios.get('http://[::1]:9222/json', { timeout: 2000 }));
-            if (response && response.status === 200) {
-                console.log('Debug port 9222 is already available, no need to launch OpenFin');
-                debugPortAvailable = true;
-            }
-        } catch {
-            console.log('Debug port not available, will launch OpenFin application');
-        }
-
-        if (!debugPortAvailable) {
-            await launchOpenFinApplication();
-            await new Promise(resolve => setTimeout(resolve, 15000));
-        }
-    },
-
-    beforeFeature: function (uri, feature) {
-        console.log(`Running feature: ${feature.name}`);
-    },
-
-    afterStep: async function (step, scenario, { error }) {
-        if (error) {
-            const screenshotPath = path.join(process.cwd(), 'screenshots', `${step.text.replace(/\s+/g, '_')}_failed.png`);
-            await browser.saveScreenshot(screenshotPath);
-            console.log(`Screenshot taken: ${screenshotPath}`);
+        if (!(await isDebugPortAvailable())) {
+            console.log('Debug port not up – launching OpenFin …');
+            const ok = await launchOpenFinApplication(BAT_FILE_PATH);
+            if (!ok) throw new Error('OpenFin failed to start');
+        } else {
+            console.log('OpenFin / Chrome debug port is already available.');
         }
     }
 };
-
-async function launchOpenFinApplication() {
-    return new Promise((resolve, reject) => {
-        const batFilePath = 'C:\\Merlin\\launch_openfin_fo_dev.bat';
-        if (!fs.existsSync(batFilePath)) {
-            console.error(`Batch file not found: ${batFilePath}`);
-            return reject(new Error(`Batch file not found: ${batFilePath}`));
-        }
-
-        console.log(`Launching OpenFin application using batch file: ${batFilePath}`);
-        try {
-            spawn('taskkill', ['/f', '/im', 'OpenFin.exe'], { shell: true });
-            spawn('taskkill', ['/f', '/im', 'OpenFinRVM.exe'], { shell: true });
-
-            setTimeout(() => {
-                try {
-                    const child = spawn(batFilePath, { shell: true });
-                    child.stdout.on('data', data => console.log(`OpenFin stdout: ${data}`));
-                    child.stderr.on('data', data => console.error(`OpenFin stderr: ${data}`));
-                    child.on('error', err => reject(err));
-                    console.log('OpenFin launch initiated...');
-                    resolve();
-                } catch (err) {
-                    reject(err);
-                }
-            }, 2000);
-        } catch (err) {
-            console.warn('Failed to kill existing processes, proceeding...');
-            resolve();
-        }
-    });
-}

@@ -1,4 +1,4 @@
-const { waitForVisible, waitForClickable } = require('../utils/wait-helper');
+import { waitForVisible, waitForClickable } from '../utils/wait-helper.js';
 
 class LoginPage {
     // Selectors

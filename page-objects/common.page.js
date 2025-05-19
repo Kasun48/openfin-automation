@@ -1,4 +1,4 @@
-const { switchToWindowContaining } = require('../utils/wait-helper');
+import { switchToWindowContaining } from '../utils/wait-helper.js';
 
 class CommonPage {
     /**
