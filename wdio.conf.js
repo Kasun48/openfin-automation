@@ -8,13 +8,13 @@ exports.config = {
     specs: ['./features/**/*.feature'],
     exclude: [],
     maxInstances: 1,
+    automationProtocol: 'devtools',
     capabilities: [{
         browserName: 'chrome',
         acceptInsecureCerts: true,
         'goog:chromeOptions': {
             debuggerAddress: '127.0.0.1:9222'
-        },
-        automationProtocol: 'devtools'
+        }
     }],
     logLevel: 'info',
     bail: 0,
@@ -22,7 +22,7 @@ exports.config = {
     waitforTimeout: 60000,
     connectionRetryTimeout: 120000,
     connectionRetryCount: 3,
-    services: [], // No chromedriver or selenium
+    services: ['devtools'], // No chromedriver or selenium
     framework: 'cucumber',
     reporters: ['spec'],
     cucumberOpts: {
@@ -37,6 +37,7 @@ exports.config = {
         process.env.WDIO_DISABLE_CHROMEDRIVER = 'true';
 
         const screenshotDir = path.join(process.cwd(), 'screenshots');
+        console.log('>>> automationProtocol:', exports.config.automationProtocol);
         await fs.ensureDir(screenshotDir);
 
         let debugPortAvailable = false;
