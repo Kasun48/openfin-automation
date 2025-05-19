@@ -12,9 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/Kasun48/openfin-automation.git"
   },
-  "keywords": ["openfin",
-    "webdriverio",
-    "automation"],
+  "keywords": ["openfin", "webdriverio", "automation"],
   "author": "",
   "license": "ISC",
   "bugs": {
@@ -26,9 +24,7 @@
     "@wdio/cucumber-framework": "^8.16.18",
     "@wdio/local-runner": "^8.16.18",
     "@wdio/spec-reporter": "^8.16.18",
-    "chromedriver": "^136.0.2",
-    "webdriverio": "^8.16.18",
-    "wdio-chromedriver-service": "^8.1.1"
+    "webdriverio": "^8.16.18"
   },
   "dependencies": {
     "axios": "^1.9.0",

@@ -1,8 +1,7 @@
 const path = require('path');
 const fs = require('fs-extra');
-// In the launchOpenFinApplication function:
-const batFilePath = 'C:\\Merlin\\launch_openfin_fo_dev.bat'; 
 const { spawn } = require('child_process');
+const axios = require('axios');
 
 exports.config = {
     //
@@ -19,35 +18,35 @@ exports.config = {
         './features/**/*.feature'
     ],
     // Patterns to exclude.
-    exclude: [
-        // 'path/to/excluded/files'
-    ],
+    exclude: [],
     //
     // ============
     // Capabilities
     // ============
     maxInstances: 1,
     capabilities: [{
-        maxInstances: 1,
         browserName: 'chrome',
         acceptInsecureCerts: true,
         'goog:chromeOptions': {
-            debuggerAddress: '127.0.0.1:9222',
+            debuggerAddress: '127.0.0.1:9222'
         },
+        // Force DevTools protocol and disable WebDriver protocol
         automationProtocol: 'devtools'
     }],
     //
     // ===================
     // Test Configurations
     // ===================
-    // Level of logging verbosity: trace | debug | info | warn | error | silent
     logLevel: 'info',
     bail: 0,
     baseUrl: 'http://localhost:8081',
     waitforTimeout: 60000,
     connectionRetryTimeout: 120000,
     connectionRetryCount: 3,
+    
+    // No services needed with DevTools protocol
     services: [],
+    
     framework: 'cucumber',
     reporters: ['spec'],
     cucumberOpts: {
@@ -79,11 +78,27 @@ exports.config = {
         const screenshotDir = path.join(process.cwd(), 'screenshots');
         await fs.ensureDir(screenshotDir);
         
-        // Launch OpenFin application
-        await launchOpenFinApplication();
+        // Check if debug port is already available
+        let debugPortAvailable = false;
+        try {
+            const response = await axios.get('http://127.0.0.1:9222/json', { timeout: 2000 })
+                .catch(() => axios.get('http://[::1]:9222/json', { timeout: 2000 }));
+                
+            if (response && response.status === 200) {
+                console.log('Debug port 9222 is already available, no need to launch OpenFin');
+                debugPortAvailable = true;
+            }
+        } catch (e) {
+            console.log('Debug port not available, will launch OpenFin application');
+        }
         
-        // Give time for OpenFin to fully initialize
-        await new Promise(resolve => setTimeout(resolve, 15000));
+        // Only launch OpenFin if debug port is not available
+        if (!debugPortAvailable) {
+            await launchOpenFinApplication();
+            
+            // Give time for OpenFin to fully initialize
+            await new Promise(resolve => setTimeout(resolve, 15000));
+        }
     },
     
     beforeFeature: function (uri, feature) {
@@ -152,4 +167,17 @@ async function launchOpenFinApplication() {
             resolve();
         }
     });
+}
+
+// Helper function to check if debug port is available
+async function isDebugPortAvailable() {
+    try {
+        // Try both IPv4 and IPv6
+        const response = await axios.get('http://127.0.0.1:9222/json', { timeout: 2000 })
+            .catch(() => axios.get('http://[::1]:9222/json', { timeout: 2000 }));
+            
+        return response && response.status === 200;
+    } catch (e) {
+        return false;
+    }
 }

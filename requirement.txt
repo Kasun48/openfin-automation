@@ -1,0 +1,26 @@
+Remove-Item -Recurse -Force node_modules
+Remove-Item package-lock.json
+npm install
+
+
+npm clean-install
+
+# Clear WebDriverIO cache folders
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$env:USERPROFILE\.cache\selenium"
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$env:USERPROFILE\.cache\webdriver"
+
+#Complete OpenFin Project Reset Procedure
+# 1. Stop any running OpenFin processes:
+taskkill /f /im OpenFin.exe
+taskkill /f /im OpenFinRVM.exe
+
+# 2. Clean WebDriverIO dependencies:
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue node_modules
+Remove-Item -ErrorAction SilentlyContinue package-lock.json
+
+# 3. Clear cache folders:
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$env:USERPROFILE\.cache\selenium"
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$env:USERPROFILE\.cache\webdriver"
+
+# 4. Reinstall packages: 
+npm install
