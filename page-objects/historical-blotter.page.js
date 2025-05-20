@@ -1,5 +1,4 @@
 import { Given, When, Then } from '@wdio/cucumber-framework';
-import HistoricalBlotterPage from '../page-objects/historical-blotter.page.js';
 import CommonPage from '../page-objects/common.page.js';
 import { captureScreenshot } from '../utils/screenshot.js';
 import { switchToWindowContaining } from '../utils/wait-helper.js';

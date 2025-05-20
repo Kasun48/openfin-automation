@@ -1,4 +1,3 @@
-// openfin-launcher.js
 import { spawn } from 'child_process';
 import fs from 'fs-extra';
 import axios from 'axios';
@@ -17,7 +16,7 @@ export async function launchOpenFinApplication(batchFilePath, timeout = 120000) 
     try {
         await killProcess('OpenFin.exe');
         await killProcess('OpenFinRVM.exe');
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 12000));
     } catch (error) {
         console.warn(`Error killing existing processes: ${error}`);
     }

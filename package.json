@@ -5,9 +5,9 @@
   "description": "Automate OpenFin application with WebDriverIO using DevTools protocol",
   "main": "index.js",
   "scripts": {
-    "test": "CCHROMEDRIVER_SKIP_DOWNLOAD=true WDIO_DISABLE_CHROMEDRIVER=true wdio run wdio.conf.js",
-    "test:login": "wdio run wdio.conf.js --spec ./features/login.feature",
-    "test:historical-blotter": "wdio run wdio.conf.js --spec ./features/historical-blotter.feature"
+    "test": "node --no-warnings=ExperimentalWarning --experimental-vm-modules node_modules/.bin/wdio run wdio.conf.js",
+    "test:login": "node --no-warnings=ExperimentalWarning --experimental-vm-modules node_modules/.bin/wdio run wdio.conf.js --spec ./features/login.feature",
+    "test:historical-blotter": "node --no-warnings=ExperimentalWarning --experimental-vm-modules node_modules/.bin/wdio run wdio.conf.js --spec ./features/historical-blotter.feature"
   },
   "devDependencies": {
     "@wdio/cli": "^8.16.18",
